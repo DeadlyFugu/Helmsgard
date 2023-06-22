@@ -178,10 +178,10 @@ void BFont_drawTextExt(BFontID font, int x, int y,
     if (font < 0 || font > _bfontCount) return;
     BFont* bfont = &_bfonts[font];
 
-    char buf[256];
+    char buf[512];
     va_list lst;
     va_start(lst, string);
-    vsnprintf(buf, 256, string, lst);
+    vsnprintf(buf, 512, string, lst);
     va_end(lst);
 
     int rowStart = 0;

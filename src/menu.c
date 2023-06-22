@@ -164,12 +164,14 @@ static void _renderOptions(void) {
     BFontID bf = BFont_find("dialog");
 
     BFont_drawTextExt(bf, 50, 50, SCREEN_WIDTH-100, 0,
-        "Made by Matthew Turner. Copyright 2020/2021.\n"
+        "Made by Matthew Turner. Copyright 2020-23.\n"
         "Using SDL2, SDL FontCache, and cute tiled.\n"
         "-----\n"
         "Using assets from\n"
-        "> RPG Dungeon Tileset   by Pita on itch.io.\n"
-        "> RPG asset pack   by Moose Stache on itch.io.\n"
+        "> RPG Dungeon Tileset by Pita\n"
+        "> RPG asset pack by Moose Stache\n"
+        "> Ancient Game by Epic Stock Media\n"
+        "> RPG Music Pack The Complete Collection by Owl Theory Music\n"
         "-----\n"
         "Thanks for playing!\n");
 }
