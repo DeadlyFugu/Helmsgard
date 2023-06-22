@@ -15,7 +15,7 @@
 
 // ===== [[ Defines ]] =====
 
-#define FAERJOLD_VERSION "dev 21.01"
+#define FAERJOLD_VERSION "23.06"
 #define SCREEN_WIDTH 426
 #define SCREEN_HEIGHT 240
 

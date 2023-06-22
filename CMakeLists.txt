@@ -3,7 +3,7 @@ project(Helmsgard C)
 
 set(CMAKE_C_STANDARD 11)
 
-find_package(SDL2 REQUIRED CONFIG COMPONENTS SDL2)
+find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
 find_package(SDL2_ttf REQUIRED CONFIG)
 
 set(HELMSGARD_SOURCES
@@ -40,7 +40,9 @@ set(HELMSGARD_SOURCES
         src/zz_tiled.h
         )
 
-add_executable(Helmsgard ${HELMSGARD_SOURCES})
-#target_include_directories(Helmsgard PUBLIC ${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
-#target_link_libraries(Helmsgard PUBLIC ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES})
+add_executable(Helmsgard WIN32 ${HELMSGARD_SOURCES})
+
+if(TARGET SDL2::SDL2main)
+    target_link_libraries(Helmsgard PRIVATE SDL2::SDL2main)
+endif()
 target_link_libraries(Helmsgard PRIVATE SDL2::SDL2 SDL2_ttf::SDL2_ttf)
