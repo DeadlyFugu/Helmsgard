@@ -1,5 +1,5 @@
 #include "common.h"
-//#include <SDL_mixer.h>
+#include <SDL_mixer.h>
 
 // ===== [[ Defines ]] =====
 
@@ -11,12 +11,12 @@
 
 typedef struct {
     char name[NAME_LENGTH];
-    //Mix_Music* mixMusic;
+    Mix_Music* mixMusic;
 } Music;
 
 typedef struct {
     char name[NAME_LENGTH];
-    //Mix_Chunk* mixChunk;
+    Mix_Chunk* mixChunk;
 } Sound;
 
 // ===== [[ Declarations ]] =====
@@ -36,14 +36,14 @@ void Audio_startup() {
         Log_info("Audio is disabled");
         return;
     }
-    /*if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 512) < 0) {
+    if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 512) < 0) {
         Log_error("failed to init audio: %s", Mix_GetError());
         return;
     }
     if (Mix_AllocateChannels(16) < 0) {
         Log_error("failed to init audio: %s", Mix_GetError());
         return;
-    }*/
+    }
 }
 
 void Music_loadFrom(const char* assetpath) {
@@ -71,8 +71,8 @@ void Music_loadFrom(const char* assetpath) {
 
         char filepath[256];
         snprintf(filepath, 256, "assets/music/%s", source);
-        //music->mixMusic = Mix_LoadMUS(filepath);
-        //if (!music->mixMusic) Log_warn("Failed to load %s", filepath);
+        music->mixMusic = Mix_LoadMUS(filepath);
+        if (!music->mixMusic) Log_warn("Failed to load %s", filepath);
     }
 
     Ini_clear();
@@ -91,13 +91,13 @@ void Music_play(MusicID self) {
     if (Config_muteMusic) return;
     if (self < 0 || self > _musicCount) return;
     Music* music = &_music[self];
-    //if (!music->mixMusic) return;
+    if (!music->mixMusic) return;
 
-    //Mix_PlayMusic(music->mixMusic, -1);
+    Mix_PlayMusic(music->mixMusic, -1);
 }
 
 void Music_stop(void) {
-    //Mix_HaltMusic();
+    Mix_HaltMusic();
 }
 
 void Sound_loadFrom(const char* assetpath) {
@@ -125,8 +125,19 @@ void Sound_loadFrom(const char* assetpath) {
 
         char filepath[256];
         snprintf(filepath, 256, "assets/sounds/%s", source);
-        //sound->mixChunk = Mix_LoadWAV(filepath);
-        //if (!sound->mixChunk) Log_warn("Failed to load %s", filepath);
+        sound->mixChunk = Mix_LoadWAV(filepath);
+        if (!sound->mixChunk) {
+            Archive arc = Archive_open("assets/sounds.arc");
+            if (arc) {
+                size_t size = Archive_getSize(arc, source);
+                uint8_t *data = malloc(size);
+                Archive_read(arc, source, size, data);
+                sound->mixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(data, (int) size), 1);
+                Archive_close(arc);
+                free(data);
+            }
+        }
+        if (!sound->mixChunk) Log_warn("Failed to load %s", filepath);
     }
 
     Ini_clear();
@@ -145,7 +156,7 @@ void Sound_play(SoundID self) {
     if (Config_muteSounds) return;
     if (self < 0 || self > _soundCount) return;
     Sound* sound = &_sounds[self];
-    //if (!sound->mixChunk) return;
+    if (!sound->mixChunk) return;
 
-    //Mix_PlayChannel(-1, sound->mixChunk, 0);
+    Mix_PlayChannel(-1, sound->mixChunk, 0);
 }

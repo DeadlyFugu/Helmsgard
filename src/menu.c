@@ -38,6 +38,7 @@ void Menu_enter(void) {
     _sel = 0;
     _xc = -100;
     _xt = 50;
+    Music_play(Music_find("menu"));
 }
 
 void Menu_leave(void) {

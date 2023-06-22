@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 find_package(SDL2 REQUIRED CONFIG REQUIRED COMPONENTS SDL2)
 find_package(SDL2_ttf REQUIRED CONFIG)
+find_package(SDL2_mixer REQUIRED CONFIG)
 
 set(HELMSGARD_SOURCES
         src/archive.c
@@ -45,4 +46,7 @@ add_executable(Helmsgard WIN32 ${HELMSGARD_SOURCES})
 if(TARGET SDL2::SDL2main)
     target_link_libraries(Helmsgard PRIVATE SDL2::SDL2main)
 endif()
-target_link_libraries(Helmsgard PRIVATE SDL2::SDL2 SDL2_ttf::SDL2_ttf)
+target_link_libraries(Helmsgard PRIVATE
+        SDL2::SDL2
+        SDL2_ttf::SDL2_ttf
+        SDL2_mixer::SDL2_mixer)

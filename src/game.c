@@ -111,6 +111,7 @@ void Game_enter(void) {
     _substate = GameSubstate_interact;
     _sel = 0;
     Game_reload();
+    Music_play(Music_find("explore"));
 }
 
 void Game_leave(void) {
